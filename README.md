@@ -58,3 +58,9 @@ See `PROJECT.md` for the product scope and future milestones.
 - PostgreSQL production provider and Compose database service
 
 The current local authentication is intentionally not enabled yet. Before exposing the app publicly, add an external OIDC provider, server-side authorization policies, secret storage and database migrations.
+
+## Colour codes for push(still working on it)
+Grey push - progress but not 100% functional 
+White push - beginning stage
+Black push - 
+Red push - 
