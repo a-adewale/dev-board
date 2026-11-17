@@ -1,0 +1,31 @@
+services:
+  api:
+    build: ./backend/src/DevBoard.Api
+    ports:
+      - "5080:5080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DevBoard: Host=postgres;Port=5432;Database=devboard;Username=devboard;Password=change-me
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      api:
+        condition: service_started
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: devboard
+      POSTGRES_USER: devboard
+      POSTGRES_PASSWORD: change-me
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U devboard -d devboard"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres-data:

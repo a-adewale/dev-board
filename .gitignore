@@ -1,0 +1,13 @@
+**/bin/
+**/obj/
+**/node_modules/
+**/dist/
+*.db
+.dotnet-cli/
+.vs/
+.vscode/
+*.user
+*.suo
+.env
+.env.*
+!.env.example

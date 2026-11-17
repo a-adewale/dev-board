@@ -1,0 +1,32 @@
+name: DevBoard CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: 01-devboard/frontend/package-lock.json
+      - run: dotnet test 01-devboard/backend/tests/DevBoard.Api.Tests/DevBoard.Api.Tests.csproj
+      - run: npm ci
+        working-directory: 01-devboard/frontend
+      - run: npm run lint
+        working-directory: 01-devboard/frontend
+      - run: npm run build
+        working-directory: 01-devboard/frontend
+      - run: dotnet list 01-devboard/backend/src/DevBoard.Api/DevBoard.Api.csproj package --vulnerable --include-transitive
+        continue-on-error: true
+      - run: npm audit --audit-level=high
+        working-directory: 01-devboard/frontend
+        continue-on-error: true
